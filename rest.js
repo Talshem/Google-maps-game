@@ -4,13 +4,7 @@ const path = require('path')
 
 app.use(express.json());
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
-});
-
-app.get('/main.js', function(req, res) {
-    res.sendFile(path.join(__dirname + '/main.js'));
-});
+app.use(express.static('public'))
 
 const PORT = 3000
 
