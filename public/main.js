@@ -31,30 +31,30 @@ let hard = [
 var difficulty = easy;
 let random = Math.floor(Math.random() * difficulty.length);
 let getCity = document.getElementById('getCity')
-getCity.innerText = 'Pin ' + difficulty[random].name;
+getCity.innerText = 'Mark: ' + difficulty[random].name;
 
-let button = document.getElementById('difficulty')
-button.addEventListener("click", setMode)
+let modeButton = document.getElementById('difficulty')
+modeButton.addEventListener("click", setMode)
 
 function setMode(){
-if (button.innerText === 'Easy Mode'){
-button.innerText = 'Hard Mode'
+if (modeButton.innerText === 'Easy Mode'){
+modeButton.innerText = 'Hard Mode'
 difficulty = hard
 random = Math.floor(Math.random() * difficulty.length);
-getCity.innerText = 'Pin ' + difficulty[random].name;
+getCity.innerText = 'Mark: ' + difficulty[random].name;
+initMap()
 } else {
-button.innerText = 'Easy Mode'
+modeButton.innerText = 'Easy Mode'
 difficulty = easy
 random = Math.floor(Math.random() * difficulty.length);
-getCity.innerText = 'Pin ' + difficulty[random].name;
+getCity.innerText = 'Mark: ' + difficulty[random].name;
+initMap()
 }
 }
 
 
 function initMap() {
-  // The location of Israel
   var israel = {lat: 	31.371959, lng: 35};
-  // The map, centered at Israel
   var map = new google.maps.Map(
       document.getElementById('map'), {
       zoom: 7.7,
@@ -81,13 +81,42 @@ function initMap() {
         }]
       }]
     });
-  // The marker, positioned at Israel
+
+let circle;
 
   var listener = map.addListener("click", (event) => {
     addMarker(event.latLng);
   });
 
-// Adds a marker to the map and push to the array.
+let hintButton = document.getElementById('hint')
+hintButton.addEventListener("mousedown", showHint)
+hintButton.addEventListener("mouseup", () => {
+circle.setMap(null);
+circle = null
+})
+
+function showHint(){
+let end = 1
+let start = -1
+var range = end - start;
+var result = Math.random() * range;
+result += start;
+  
+  let number = 1 - result / 100
+  circle = new google.maps.Circle({
+      strokeColor: "#FF0000",
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#FF0000",
+      fillOpacity: 0.35,
+      map,
+      animation: google.maps.Animation.BOUNCE,
+      center: {lat: difficulty[random].lat*number, lng: difficulty[random].lng*number},
+      radius: 1000 * 100,
+    });
+}
+
+
 function addMarker(location) {
 
 google.maps.event.removeListener(listener);
@@ -116,16 +145,10 @@ results.distance > 10 ?
 :
 `Good job! you got ${results.points} points`
 )
-for (let i = 0; i < markers.length; i++) {
-   markers[i].setMap(null);
-   }
 markers = []
 random = Math.floor(Math.random() * difficulty.length);
-
 getCity.innerText = 'Pin ' + difficulty[random].name;
-  listener = map.addListener("click", (event) => {
-    addMarker(event.latLng);
-  });
+initMap();
 }, 1000);
 }
 
