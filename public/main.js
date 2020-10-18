@@ -1,5 +1,5 @@
+const url = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBqeM8YMx4gZ3byhtZ0rhaAPTXUiJW6OKA&callback=initMap&libraries=geometry"
 
-// Initialize and add the map
 let markers = [];
 
 let easy = [
@@ -54,6 +54,7 @@ initMap()
 
 
 function initMap() {
+  let points = 1000;
   var israel = {lat: 	31.371959, lng: 35};
   var map = new google.maps.Map(
       document.getElementById('map'), {
@@ -61,6 +62,11 @@ function initMap() {
       center: israel,
           gestureHandling: 'none',
           zoomControl: false,
+  mapTypeControl: false,
+  scaleControl: false,
+  streetViewControl: false,
+  rotateControl: false,
+  fullscreenControl: false,
       styles: [{
         "featureType": "administrative.neighborhood",
         "elementType": "labels",
@@ -96,13 +102,14 @@ circle = null
 })
 
 function showHint(){
+points -= 50;
 let end = 1
 let start = -1
 var range = end - start;
 var result = Math.random() * range;
 result += start;
-  
-  let number = 1 - result / 100
+let number = 1 - result / 100
+
   circle = new google.maps.Circle({
       strokeColor: "#FF0000",
       strokeOpacity: 0.8,
@@ -136,7 +143,7 @@ google.maps.event.removeListener(listener);
     }
   });
   markers.push(marker);
-let results = determinePoints(markers[0].position, markers[1].position)
+let results = determinePoints(markers[0].position, markers[1].position, points)
 
 setTimeout(() => {
 alert(
@@ -154,10 +161,9 @@ initMap();
 
 
 
-function determinePoints(marker, city){
-let points = 1000;
+function determinePoints(marker, city, score){
 let distance = Math.floor(google.maps.geometry.spherical.computeDistanceBetween(marker,city) / 1000)
-points = points - distance * 5
+points = score - distance * 5
 return { points: points > 0 ? points : 0, distance }
 }
 

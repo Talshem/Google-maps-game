@@ -2,24 +2,61 @@
 <html>
   <head>
     <style>
-       /* Set the size of the div element that contains the map */
       #map {
         border: 2px solid black;
-        height: 700px;  /* The height is 400 pixels */
-        width: 20%;  /* The width is the width of the web page */
+        height: 700px; 
+        width: 250px; 
        }
        h2{
       display: inline;
        }
+  .tooltip {
+  position: relative;
+}
+  .tooltip .tooltiptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  margin-top: -20px;
+  margin-left: 40px;
+  opacity: 0;
+  height:16px;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 0%;
+  margin-left: -9px;
+  border-width: 5px;
+  border-style: solid;
+  transform: rotate(90deg);
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
        
     </style>
   </head>
   <body>
-    <button id="difficulty">Easy Mode</button> <h2 id="getCity"></h2> 
-    <button id="hint">hint</button> <h2 id="getCity"></h2> 
-    <!--The div element for the map -->
-    <div id="map"></div>
+    <button id="difficulty">Easy Mode</button> 
+    <button class="tooltip" id="hint">hint
+  <span class="tooltiptext">Each hints deducts you with 50 points!</span>
+    </button> <br>
+    <h2 id="getCity"></h2> 
     
+    <div id="map"></div>
  <script src="./main.js"></script>
 <script type="module" src="rest.js"> </script>
 <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqeM8YMx4gZ3byhtZ0rhaAPTXUiJW6OKA&callback=initMap&libraries=geometry"></script> 
